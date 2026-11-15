@@ -99,7 +99,6 @@ def upload_media():
 
         if frame is not None:
             results = model(frame, imgsz=640, verbose=False)
-            check_and_save_violation_crop(frame, results) # Log violations from uploaded image
             res_plotted = results[0].plot()
 
             output_filename = 'scanned_' + file.filename
@@ -138,10 +137,6 @@ def upload_media():
             
             frame_resized = cv2.resize(frame, (width, height))
             results = model(frame_resized, imgsz=320, verbose=False)
-            
-            # Check and save violations during batch video scanning
-            check_and_save_violation_crop(frame_resized, results)
-            
             out.write(results[0].plot())
             
             frame_count += 1
@@ -232,5 +227,4 @@ def process_ipad_frame():
     return '', 204
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False, threaded=True)
+    app.run(host='0.0.0.0', port=5000, ssl_context='adhoc', debug=True)
